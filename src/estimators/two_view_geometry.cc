@@ -259,17 +259,19 @@ void TwoViewGeometry::EstimateCalibrated(
   const std::vector<char>* best_inlier_mask = nullptr;
   size_t num_inliers = 0;
 
-  if (E_report.success && E_F_inlier_ratio > options.min_E_F_inlier_ratio &&
+  if (E_report.success && 
+  // if (E_report.success && E_F_inlier_ratio > options.min_E_F_inlier_ratio &&
       E_num_inliers >= options.min_num_inliers) {
     // Calibrated configuration.
 
     // Always use the model with maximum matches.
-    if (E_num_inliers >= F_num_inliers) {
+    if (true) {
+    // if (E_num_inliers >= F_num_inliers) {
       num_inliers = E_num_inliers;
       best_inlier_mask = &E_report.inlier_mask;
     } else {
-      num_inliers = F_num_inliers;
-      best_inlier_mask = &F_report.inlier_mask;
+      // num_inliers = F_num_inliers;
+      // best_inlier_mask = &F_report.inlier_mask;
     }
 
     if (H_E_inlier_ratio > options.max_H_inlier_ratio) {

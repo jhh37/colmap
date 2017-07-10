@@ -440,6 +440,9 @@ TwoViewGeometry Database::ReadInlierMatches(const image_t image_id1,
   two_view_geometry.config =
       static_cast<int>(sqlite3_column_int64(sql_stmt_read_inlier_matches_, 3));
 
+  // two_view_geometry.E = 
+  //     ReadMatrixBlob<TwoViewGeometry::E>
+
   SQLITE3_CALL(sqlite3_reset(sql_stmt_read_inlier_matches_));
 
   if (SwapImagePair(image_id1, image_id2)) {
@@ -611,9 +614,15 @@ void Database::WriteInlierMatches(
   }
 
   WriteMatrixBlob(sql_stmt_write_inlier_matches_, blob, 2);
+  // WriteMatrixBlob(sql_stmt_write_inlier_matches_, two_view_geometry.E, 6);
 
   SQLITE3_CALL(sqlite3_bind_int64(sql_stmt_write_inlier_matches_, 5,
                                   two_view_geometry.config));
+
+  const size_t num_bytes = 72;
+  SQLITE3_CALL(sqlite3_bind_blob(sql_stmt_write_inlier_matches_, 6,
+                                 reinterpret_cast<const char*>(two_view_geometry.E.data()),
+                                 static_cast<int>(num_bytes), SQLITE_STATIC));
 
   SQLITE3_CALL(sqlite3_step(sql_stmt_write_inlier_matches_));
   SQLITE3_CALL(sqlite3_reset(sql_stmt_write_inlier_matches_));
@@ -881,8 +890,8 @@ void Database::PrepareSQLStatements() {
   sql_stmts_.push_back(sql_stmt_write_matches_);
 
   sql =
-      "INSERT INTO inlier_matches(pair_id, rows, cols, data, config) "
-      "VALUES(?, ?, ?, ?, ?);";
+      "INSERT INTO inlier_matches(pair_id, rows, cols, data, config, ematrix) "
+      "VALUES(?, ?, ?, ?, ?, ?);";
   SQLITE3_CALL(sqlite3_prepare_v2(database_, sql.c_str(), -1,
                                   &sql_stmt_write_inlier_matches_, 0));
   sql_stmts_.push_back(sql_stmt_write_inlier_matches_);
@@ -1005,7 +1014,8 @@ void Database::CreateInlierMatchesTable() const {
       "    rows     INTEGER               NOT NULL,"
       "    cols     INTEGER               NOT NULL,"
       "    data     BLOB,"
-      "    config   INTEGER               NOT NULL);";
+      "    config   INTEGER               NOT NULL,"
+      "    ematrix  BLOB);";
 
   SQLITE3_EXEC(database_, sql.c_str(), nullptr);
 }
