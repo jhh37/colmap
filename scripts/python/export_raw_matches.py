@@ -99,23 +99,23 @@ def main():
                 fid.write(" ".join(map(str, descriptors[r].ravel().tolist())))
                 fid.write("\n")
 
-    with open(os.path.join(args.output_path, "inlier_matches.txt"), "w") as fid:
-        cursor.execute("SELECT pair_id, data FROM inlier_matches "
+    with open(os.path.join(args.output_path, "raw_matches.txt"), "w") as fid:
+        cursor.execute("SELECT pair_id, data FROM matches "
                        "WHERE rows>=?;", (args.min_num_matches,))
         for row in cursor:
             pair_id = row[0]
-            inlier_matches = np.fromstring(row[1],
+            raw_matches = np.fromstring(row[1],
                                            dtype=np.uint32).reshape(-1, 2)
             image_id1, image_id2 = pair_id_to_image_ids(pair_id)
             image_name1 = images[image_id1][1]
             image_name2 = images[image_id2][1]
             fid.write("%s %s %d\n" % (image_name1, image_name2,
-                                      inlier_matches.shape[0]))
+                                      raw_matches.shape[0]))
             line1 = ""
             line2 = ""
-            for i in range(inlier_matches.shape[0]):
-                line1 += "%d " % inlier_matches[i, 0]
-                line2 += "%d " % inlier_matches[i, 1]
+            for i in range(raw_matches.shape[0]):
+                line1 += "%d " % raw_matches[i, 0]
+                line2 += "%d " % raw_matches[i, 1]
             fid.write(line1 + "\n")
             fid.write(line2 + "\n")
 
