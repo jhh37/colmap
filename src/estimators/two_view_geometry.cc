@@ -224,6 +224,17 @@ void TwoViewGeometry::EstimateCalibrated(
   E = E_report.model;
   E_num_inliers = E_report.support.num_inliers;
 
+  ceres::Solver::Options solver_options;
+  solver_options.max_num_iterations = 100;
+  solver_options.linear_solver_type = ceres::DENSE_QR;
+
+  // The overhead of creating threads is too large.
+  solver_options.num_threads = 1;
+  solver_options.num_linear_solver_threads = 1;
+
+  RefineEssentialMatrix(solver_options, matched_points1_N, matched_points2_N,
+                        E_report.inlier_mask, &E);
+
   LORANSAC<FundamentalMatrixSevenPointEstimator,
            FundamentalMatrixEightPointEstimator>
       F_ransac(options.ransac_options);

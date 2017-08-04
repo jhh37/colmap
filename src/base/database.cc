@@ -623,9 +623,9 @@ void Database::WriteInlierMatches(
 
   Eigen::Matrix3d E(3,3);
   if (SwapImagePair(image_id1, image_id2)) {
-    E = two_view_geometry.E.transpose();
-  } else {
     E = two_view_geometry.E;
+  } else {
+    E = two_view_geometry.E.transpose();
   }
   
   SQLITE3_CALL(sqlite3_bind_blob(sql_stmt_write_inlier_matches_, 6,
