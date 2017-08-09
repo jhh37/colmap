@@ -683,9 +683,10 @@ void TwoViewGeometryVerifier::Run() {
                                                 points2, data.matches,
                                                 two_view_geometry_options_);
       } else {
-        data.two_view_geometry.Estimate(camera1, points1, camera2, points2,
-                                        data.matches,
-                                        two_view_geometry_options_);
+        data.two_view_geometry.EstimateWithRelativePose(camera1, points1,
+                                                        camera2, points2,
+                                                        data.matches,
+                                                        two_view_geometry_options_);
       }
 
       CHECK(output_queue_->Push(data));
