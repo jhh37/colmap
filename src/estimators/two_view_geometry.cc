@@ -225,7 +225,7 @@ void TwoViewGeometry::EstimateCalibrated(
   E_num_inliers = E_report.support.num_inliers;
 
   ceres::Solver::Options solver_options;
-  solver_options.max_num_iterations = 100;
+  solver_options.max_num_iterations = 500;
   solver_options.linear_solver_type = ceres::DENSE_QR;
 
   // The overhead of creating threads is too large.
@@ -247,6 +247,7 @@ void TwoViewGeometry::EstimateCalibrated(
   LORANSAC<HomographyMatrixEstimator, HomographyMatrixEstimator> H_ransac(
       options.ransac_options);
   const auto H_report = H_ransac.Estimate(matched_points1, matched_points2);
+
   H = H_report.model;
   H_num_inliers = H_report.support.num_inliers;
 
