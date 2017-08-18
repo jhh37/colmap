@@ -226,7 +226,7 @@ void TwoViewGeometry::EstimateCalibrated(
 
   ceres::Solver::Options solver_options;
   solver_options.max_num_iterations = 500;
-  solver_options.linear_solver_type = ceres::DENSE_QR;
+  solver_options.linear_solver_type = ceres::DENSE_SCHUR;
 
   // The overhead of creating threads is too large.
   solver_options.num_threads = 1;
