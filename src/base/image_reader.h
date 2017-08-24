@@ -40,7 +40,7 @@ class ImageReader {
     std::vector<std::string> image_list;
 
     // Name of the camera model.
-    std::string camera_model = "PINHOLE" // "SIMPLE_RADIAL";
+    std::string camera_model = "PINHOLE"; // "SIMPLE_RADIAL";
 
     // Whether to use the same camera for all images.
     bool single_camera = true; // false;
