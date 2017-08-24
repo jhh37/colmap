@@ -28,7 +28,8 @@ Camera::Camera()
       model_id_(kInvalidCameraModelId),
       width_(0),
       height_(0),
-      prior_focal_length_(false) {}
+      prior_focal_length_(true) {}
+      // prior_focal_length_(false) {}
 
 std::string Camera::ModelName() const { return CameraModelIdToName(model_id_); }
 

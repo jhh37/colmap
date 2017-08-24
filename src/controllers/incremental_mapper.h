@@ -71,9 +71,9 @@ class IncrementalMapperController : public Thread {
     double max_extra_param = 1.0;
 
     // Which intrinsic parameters to optimize during the reconstruction.
-    bool ba_refine_focal_length = true;
+    bool ba_refine_focal_length = false; // true;
     bool ba_refine_principal_point = false;
-    bool ba_refine_extra_params = true;
+    bool ba_refine_extra_params = false; // true;
 
     // The number of images to optimize in local bundle adjustment.
     int ba_local_num_images = 6;
@@ -82,7 +82,7 @@ class IncrementalMapperController : public Thread {
     int ba_local_max_num_iterations = 25;
 
     // Whether to use PBA in global bundle adjustment.
-    bool ba_global_use_pba = true;
+    bool ba_global_use_pba = false; // true;
 
     // The GPU index for PBA bundle adjustment.
     int ba_global_pba_gpu_index = -1;
