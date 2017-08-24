@@ -40,10 +40,10 @@ class ImageReader {
     std::vector<std::string> image_list;
 
     // Name of the camera model.
-    std::string camera_model = "SIMPLE_RADIAL";
+    std::string camera_model = "PINHOLE" // "SIMPLE_RADIAL";
 
     // Whether to use the same camera for all images.
-    bool single_camera = false;
+    bool single_camera = true; // false;
 
     // Specification of manual camera parameters. If empty, camera parameters
     // will be extracted from EXIF, i.e. principal point and focal length.
